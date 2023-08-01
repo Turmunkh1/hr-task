@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1690909525583,
+    "userId": 1690896335161,
+    "name": "bat",
+    "lastname": "1",
+    "birthday": "2023-08-10",
+    "address": "s",
+    "email": "turuu@gmail.com",
+    "phone": "5555",
+    "education": "Магистер",
+    "hobby": "Гар бөмбөг тоглох",
+    "about": "ene ehnii test yum "
+  },
+  {
+    "id": 1690911957117,
+    "userId": 1690911957117,
+    "name": "Төрмөнх",
+    "lastname": "Лхагвасүрэн",
+    "birthday": "2023-08-23",
+    "address": "Сонгино хайрхан дүүрэг",
+    "email": "t.munkhuu0507@gmail.com",
+    "phone": "85950357",
+    "education": "Баклавар",
+    "hobby": "Хөлбөмбөг тоглох",
+    "about": "Энэ бол миний тухай"
+  },
+  {
+    "id": 1690912308125,
+    "userId": 1690912308125,
+    "name": "Temuujin",
+    "lastname": "Tungalag",
+    "birthday": "2023-08-16",
+    "address": "Баянгол хайрхан дүүрэг",
+    "email": "t.munkhuu0507@gmail.com",
+    "phone": "85950357",
+    "education": "Баклавар",
+    "hobby": "Сагс тоглох",
+    "about": "Ene bol temka"
+  },
+  {
+    "id": 1690916922160,
+    "userId": 1690916374000,
+    "name": "Сарангоо",
+    "lastname": "Мишээл",
+    "birthday": "2023-08-02",
+    "address": "Баянгол хайрхан дүүрэг",
+    "email": "saran0507@gmail.com",
+    "phone": "99542201",
+    "education": "Дунд",
+    "hobby": "Хөлбөмбөг тоглох",
+    "about": "Би бол сарангоо"
+  },
+  {
+    "id": 1690917466401,
+    "userId": 1690917383943,
+    "name": "Цэцэнбэх",
+    "lastname": "Баатар",
+    "birthday": "2000-05-18",
+    "address": "Налайх дүүрэг",
+    "email": "seek@gmail.com",
+    "phone": "94199149",
+    "education": "Дунд",
+    "hobby": "Сагс тоглох",
+    "about": "Би бол Цэцэнбэх"
+  },
+  {
+    "id": 1690917808444,
+    "userId": 1690911293418,
+    "name": "sss",
+    "lastname": "sss",
+    "birthday": "2023-08-08",
+    "address": "sssss",
+    "email": "saran0507@gmail.com",
+    "phone": "94153210",
+    "education": "Магистер",
+    "hobby": "Гар бөмбөг тоглох",
+    "about": "ssssss"
+  },
+  {
+    "id": 1690917970606,
+    "userId": 1690917895693,
+    "name": "Энхмандах",
+    "lastname": "Булгансайхан",
+    "birthday": "1997-05-07",
+    "address": "Сонгино хайрхан дүүрэг",
+    "email": "enkh@gmail.com",
+    "phone": "99444921",
+    "education": "Дунд",
+    "hobby": "Гар бөмбөг тоглох",
+    "about": "Энэ бол энхмандах"
+  }
+]

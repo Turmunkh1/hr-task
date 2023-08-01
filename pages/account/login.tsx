@@ -1,8 +1,55 @@
 import Image from "next/image";
 import { Router, useRouter } from "next/router";
-import React from "react";
+import Link from "next/dist/client/link";
+import React, { useState, useEffect } from "react";
+import { setUserData } from "@/utils/utils";
+import { notification } from "antd";
+export default function Login({ message }: { message: boolean | null }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [userJsonData, setUserJsonData] = useState([]);
 
-export default function Login() {
+  const [api, contextHolder] = notification.useNotification();
+
+  const router = useRouter();
+  const stateValue = router.query.signUp || null;
+  console.log("router value", stateValue);
+
+  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const user: any = userJsonData.find(
+      (u: { username: string; password: string }) =>
+        u.username === username && u.password === password
+    );
+
+    if (user) {
+      setUserData(user);
+      localStorage.setItem("isLoggin", "true");
+      router.push("/");
+    } else {
+      alert("Нэвтрэх нэр, нууц үг буруу байна.");
+    }
+  };
+
+  const openNotification = (placement: string) => {
+    api.info({
+      message: "Мэдэгдэл",
+      description: placement,
+    });
+  };
+
+  if (stateValue == "success") {
+    openNotification(
+      "Бүртгэл амжилттай боллоо. Та бүртгэлээрээ нэвтэрч орно уу."
+    );
+  }
+
+  useEffect(() => {
+    fetch("/api/serviceUser")
+      .then((response) => response.json())
+      .then((data) => setUserJsonData(data));
+  }, []);
+
   return (
     <main
       className="flex min-h-screen flex-col items-center justify-center overflow-hidden"
@@ -13,13 +60,18 @@ export default function Login() {
         backgroundRepeat: "no-repeat",
       }}
     >
+      {contextHolder}
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 w-full">
         <div className="w-full bg-white/80 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Нэвтрэх
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form
+              className="space-y-4 md:space-y-6"
+              action="#"
+              onSubmit={handleLogin}
+            >
               <div>
                 <label
                   htmlFor="email"
@@ -28,6 +80,7 @@ export default function Login() {
                   Нэвтрэх нэр:
                 </label>
                 <input
+                  onChange={(e) => setUsername(e.target.value)}
                   type="username"
                   name="username"
                   id="username"
@@ -44,6 +97,7 @@ export default function Login() {
                   Нууц үг
                 </label>
                 <input
+                  onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   name="password"
                   id="password"
@@ -54,18 +108,19 @@ export default function Login() {
               </div>
 
               <button
-                type="button"
+                type="submit"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-full"
               >
                 Нэвтрэх
               </button>
-
-              <button
-                type="button"
-                className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 w-full"
-              >
-                Бүртгүүлэх
-              </button>
+              <Link href={"/account/signup"}>
+                <button
+                  type="button"
+                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 w-full mt-5"
+                >
+                  Бүртгүүлэх
+                </button>
+              </Link>
             </form>
           </div>
         </div>

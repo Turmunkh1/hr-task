@@ -1,7 +1,10 @@
-import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
+import { notification } from "antd";
+import { useRouter } from "next/router";
 
 export default function SignUp() {
-  const [data, setData] = useState();
+  const router = useRouter();
+  const [api, contextHolder] = notification.useNotification();
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
@@ -9,13 +12,12 @@ export default function SignUp() {
     password: "",
   });
 
-  useEffect(() => {
-    fetch("/api/serviceUser")
-      .then((response) => response.json())
-      .then((data) => setData(data));
-  }, []);
-
-  console.log("users:", data);
+  const openNotification = (placement: string) => {
+    api.info({
+      message: "Мэдэгдэл",
+      description: placement,
+    });
+  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,12 +36,22 @@ export default function SignUp() {
       },
       body: JSON.stringify(formData),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+      .then((response) => {
+        response.json();
+        if (response.ok) {
+          router.push({
+            pathname: "/account/login",
+            query: {
+              signUp: "success",
+            },
+          });
+        } else {
+          openNotification("Бүртгэл амжилтгүй боллоо.");
+        }
+      })
+      .catch((e) => {
+        openNotification("Алдаа гарлаа");
       });
-    // Here you can access the form values through the formData state
-    console.log(formData);
   };
   return (
     <main
@@ -51,6 +63,7 @@ export default function SignUp() {
         backgroundRepeat: "no-repeat",
       }}
     >
+      {contextHolder}
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 w-full">
         <div className="w-full bg-white/80 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

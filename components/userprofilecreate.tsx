@@ -5,14 +5,25 @@ import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import type { DatePickerProps } from "antd";
 import { DatePicker } from "antd";
 
-export default function UserProfileEdit({
+export default function UserProfileCreate({
   setEditButton,
   userId,
 }: {
   setEditButton: any;
   userId: any;
 }) {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    userId: userId,
+    name: "",
+    lastname: "",
+    birthday: "",
+    address: "",
+    email: "",
+    phone: "",
+    education: "",
+    hobby: "",
+    about: "",
+  });
 
   const [api, contextHolder] = notification.useNotification();
   const [anketData, setAnketData] = useState<any>([]);
@@ -54,17 +65,17 @@ export default function UserProfileEdit({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     fetch("/api/serviceAnket", {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: items[0].id, ...formData }),
+      body: JSON.stringify(formData),
     })
       .then((response) => {
         response.json();
         if (response.ok) {
           openNotification(" Амжилттай хадгаллаа.");
-          setEditButton("list");
+          setEditButton(false);
         } else {
           openNotification("Амжилтгүй боллоо.");
         }
@@ -73,22 +84,6 @@ export default function UserProfileEdit({
         openNotification("Алдаа гарлаа");
       });
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/serviceAnket");
-        const jsonData = await response.json();
-        setAnketData(jsonData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const items = anketData.filter((item: any) => item.userId == userId);
 
   return (
     <div className="flex flex-col gap-5">
@@ -105,7 +100,6 @@ export default function UserProfileEdit({
             type="name"
             name="name"
             id="name"
-            defaultValue={items[0]?.name}
             onChange={handleChange}
             className="bg-gray-50/50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Нэр"
@@ -122,7 +116,6 @@ export default function UserProfileEdit({
           <input
             type="lastname"
             name="lastname"
-            defaultValue={items[0]?.lastname}
             id="lastname"
             onChange={handleChange}
             className="bg-gray-50/50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -138,7 +131,6 @@ export default function UserProfileEdit({
             Төрсөн өдөр:
           </label>
           <DatePicker
-            defaultValue={items[0]?.birthday}
             onChange={onChangeDate}
             style={{ width: "100%" }}
             placeholder="Төрсөн өдрөө сонгоно уу"
@@ -156,7 +148,6 @@ export default function UserProfileEdit({
             type="address"
             name="address"
             id="address"
-            defaultValue={items[0]?.address}
             onChange={handleChange}
             className="bg-gray-50/50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder=" Гэрийн хаяг оруулна уу"
@@ -174,7 +165,6 @@ export default function UserProfileEdit({
             type="email"
             name="email"
             id="email"
-            defaultValue={items[0]?.email}
             onChange={handleChange}
             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="name@company.com"
@@ -192,7 +182,6 @@ export default function UserProfileEdit({
             type="phone"
             name="phone"
             id="phone"
-            defaultValue={items[0]?.phone}
             onChange={handleChange}
             placeholder="Утасны дугаар оруулна уу"
             className="bg-gray-50/50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -213,7 +202,6 @@ export default function UserProfileEdit({
               onChangeSelect("education", e.target.value);
             }}
             required
-            defaultValue={items[0]?.education}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             <option value="Бага">Бага</option>
@@ -235,7 +223,6 @@ export default function UserProfileEdit({
             onChange={(e) => {
               onChangeSelect("hobby", e.target.value);
             }}
-            defaultValue={`"${items[0]?.hobby}"`}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             <option value="Дуулах">Дуулах</option>
@@ -256,7 +243,6 @@ export default function UserProfileEdit({
             id="about"
             name="about"
             rows={4}
-            defaultValue={items[0]?.about}
             onChange={(e) => {
               onChangeSelect("about", e.target.value);
             }}

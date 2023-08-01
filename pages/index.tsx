@@ -1,23 +1,21 @@
 import UserProfile from "@/components/userprofile";
 import UserProfileEdit from "@/components/userprofileedit";
 import React, { useState, useEffect } from "react";
-export default function index() {
-  const [editbutton, setEditButton] = useState(false);
-  const [jsonData, setJsonData] = useState<any>({});
+import withAuth from "@/components/auth";
+import { User } from "@/types/type";
+import { getUserData } from "@/utils/utils";
+
+import { useRouter } from "next/router";
+import UserProfileCreate from "@/components/userprofilecreate";
+const index = () => {
+  const router = useRouter();
+  const [editbutton, setEditButton] = useState("list");
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    fetch("./data.json")
-      .then(function (res) {
-        return res.json();
-      })
-      .then(function (data) {
-        // store Data in State Data Variable
-        setJsonData(data);
-      })
-      .catch(function (err) {
-        console.log(err, " error");
-      });
-  }, []);
+    const storedUser = getUserData();
+    setUser(storedUser);
+  }, [editbutton]);
 
   return (
     <main
@@ -30,11 +28,22 @@ export default function index() {
       }}
     >
       <div className="w-full flex flex-col lg:flex-row gap-5 py-5 justify-center">
-        <div className="flex flex-col w-[700px] rounded-lg bg-white shadow-md p-5 ">
-          {!editbutton ? (
-            <UserProfile setEditButton={setEditButton} />
-          ) : (
-            <UserProfileEdit setEditButton={setEditButton} />
+        <div className="flex flex-col w-[700px] rounded-lg bg-white shadow-md p-5 h-full">
+          {editbutton == "list" && (
+            <UserProfile
+              setEditButton={setEditButton}
+              userId={user?.id}
+              editbutton={editbutton}
+            />
+          )}
+          {editbutton == "edit" && (
+            <UserProfileEdit setEditButton={setEditButton} userId={user?.id} />
+          )}
+          {editbutton == "create" && (
+            <UserProfileCreate
+              setEditButton={setEditButton}
+              userId={user?.id}
+            />
           )}
         </div>
         <div className="flex flex-col w-[360px] rounded-lg bg-white shadow-md p-5 gap-5 h-full">
@@ -46,10 +55,14 @@ export default function index() {
             />
             <div className="flex flex-col text-black justify-between py-2">
               <span>Сайна байна уу </span>
-              <span>Лхагвасүрэн Төрмөнх</span>
+              <span>{user?.name}</span>
             </div>
           </div>
           <button
+            onClick={() => {
+              localStorage.clear();
+              router.reload();
+            }}
             type="button"
             className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
           >
@@ -59,4 +72,6 @@ export default function index() {
       </div>
     </main>
   );
-}
+};
+
+export default withAuth(index);
