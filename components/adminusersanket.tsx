@@ -116,7 +116,11 @@ const AdminUsersAnket = () => {
           {filteredList(anketData, searchValue, searchParam).map(
             (item: any, index: number) => {
               return (
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr
+                  key={index}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 timeline"
+                  style={{ animationDelay: index * 0.2 + "s" }}
+                >
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex flex-row items-center gap-2 dark:text-white"
@@ -146,6 +150,26 @@ const AdminUsersAnket = () => {
             }
           )}
         </tbody>
+        <style>
+          {`
+            .timeline {
+              opacity: 0;
+              transform: translateX(70px);
+              animation: up 0.5s forwards;
+            }
+
+            @keyframes up {
+              from {
+                opacity: 0;
+                transform: translateX(70px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            `}
+        </style>
       </table>
       <Modal
         title="Анкет дэлгэрэнгүй"

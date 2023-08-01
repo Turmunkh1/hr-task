@@ -46,6 +46,21 @@ module.exports = {
       ],
     },
     extend: {
+      keyframes: {
+        "fade-from-to-left": {
+          from: {
+            opacity: "0",
+            transform: "translateX(100px)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translateX(0px)",
+          },
+        },
+      },
+      animation: {
+        "fade-from-to-left": "fade-from-to-left 0.3s ease-out",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

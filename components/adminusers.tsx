@@ -121,7 +121,8 @@ const AdminUsers = () => {
               return (
                 <tr
                   key={index}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 timeline"
+                  style={{ animationDelay: index * 0.2 + "s" }}
                 >
                   <th
                     scope="row"
@@ -139,6 +140,26 @@ const AdminUsers = () => {
             }
           )}
         </tbody>
+        <style>
+          {`
+            .timeline {
+              opacity: 0;
+              transform: translateX(70px);
+              animation: up 0.5s forwards;
+            }
+
+            @keyframes up {
+              from {
+                opacity: 0;
+                transform: translateX(70px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            `}
+        </style>
       </table>
     </div>
   );
